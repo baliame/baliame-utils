@@ -2,6 +2,7 @@
 
 namespace Baliame\Utils\Putter\Implementation\Xml;
 
+use Baliame\Utils\Interoperability\TypeNormalization;
 use Baliame\Utils\Putter\PutterInterface;
 
 class XmlPutter implements PutterInterface
@@ -256,7 +257,7 @@ class XmlPutter implements PutterInterface
 
         foreach ($strings as $lang => $value) {
             $attributes = [];
-            if ($lang !== Element::LANGUAGE_UNDEFINED) {
+            if ($lang !== XmlSerializableInterface::LANGUAGE_UNDEFINED) {
                 $attributes['xml:lang'] = $lang;
             }
             $element = $this->outputSingleOptionalString($name, $value, $attributes);
@@ -282,7 +283,7 @@ class XmlPutter implements PutterInterface
 
         foreach ($objects as $lang => $object) {
             $attributes = [];
-            if ($lang !== Element::LANGUAGE_UNDEFINED) {
+            if ($lang !== XmlSerializableInterface::LANGUAGE_UNDEFINED) {
                 $attributes['xml:lang'] = $lang;
             }
             $element = $this->outputSingleOptionalObject($object);
@@ -304,7 +305,7 @@ class XmlPutter implements PutterInterface
      * An exception is still thrown is $object is not an instance of
      * Element and is not null.
      *
-     * @param Element|null $object
+     * @param XmlSerializableInterface|null $object
      *
      * @return \DOMNode|null
      *   The child node or null if the child node was null.
@@ -315,8 +316,8 @@ class XmlPutter implements PutterInterface
     {
         if ($object === null) {
             return null;
-        } elseif (!($object instanceof Element)) {
-            throw new \InvalidArgumentException('Referenced object is not an instance of Element.');
+        } elseif (!($object instanceof XmlSerializableInterface)) {
+            throw new \InvalidArgumentException('Referenced object is not an instance of XmlSerializableInterface.');
         }
         $value = $object->asXmlObject($this);
         /*if ($value === null) {
@@ -396,7 +397,12 @@ class XmlPutter implements PutterInterface
         if ($value !== null) {
             return $this->outputSingleNullableBoolean($name, $value, $attributes);
         } else {
-            throw new \InvalidArgumentException("Element $name in {$this->baseNode->tagName} cannot be null.");
+            if ($this->baseNode instanceof \DOMElement) {
+                throw new \InvalidArgumentException("Element $name in {$this->baseNode->tagName} cannot be null.");
+            }
+            else {
+                throw new \InvalidArgumentException("Element $name not found.");
+            }
         }
     }
 
@@ -506,7 +512,12 @@ class XmlPutter implements PutterInterface
         if ($value !== null) {
             return $this->outputSingleNullableString($name, $value, $attributes);
         } else {
-            throw new \InvalidArgumentException("Element $name in {$this->baseNode->tagName} cannot be null.");
+            if ($this->baseNode instanceof \DOMElement) {
+                throw new \InvalidArgumentException("Element $name in {$this->baseNode->tagName} cannot be null.");
+            }
+            else {
+                throw new \InvalidArgumentException("Element $name cannot be null.");
+            }
         }
     }
 
@@ -537,7 +548,7 @@ class XmlPutter implements PutterInterface
      * Required implies that if the object is null or their XML
      * representation is null, an error is raised.
      *
-     * @param Element|null $object
+     * @param XmlSerializableInterface|null $object
      *
      * @return \DOMNode
      *   The child node.
@@ -548,7 +559,7 @@ class XmlPutter implements PutterInterface
     {
         if ($object === null) {
             throw new \InvalidArgumentException('Provided object must not be null.');
-        } elseif (!($object instanceof Element)) {
+        } elseif (!($object instanceof XmlSerializableInterface)) {
             throw new \InvalidArgumentException('Referenced object is not an instance of Element.');
         }
         $value = $object->asXmlObject($this);
@@ -605,7 +616,7 @@ class XmlPutter implements PutterInterface
      */
     public function outputLanguage($language)
     {
-        if ($language === Element::LANGUAGE_UNDEFINED) {
+        if ($language === XmlSerializableInterface::LANGUAGE_UNDEFINED) {
             return;
         } else {
             $this->addAttributes(['xml:lang' => $language]);
