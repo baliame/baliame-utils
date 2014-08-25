@@ -683,7 +683,7 @@ class XmlParser implements ParserInterface
      *
      * @throws \Exception
      */
-    public function parseBooleanAttribute($attributeName, $default = null)
+    public function parseOptionalBooleanAttribute($attributeName, $default = null)
     {
         if (!($this->current instanceof \DOMElement)) {
             throw new \Exception('Invalid state: current node does not support attributes.');
@@ -696,6 +696,34 @@ class XmlParser implements ParserInterface
             $value = TypeNormalization::normalizeStringToBoolean($current->getAttribute($attributeName));
         } else {
             $value = $default;
+        }
+
+        return $value;
+    }
+
+    /**
+     * Returns the boolean representation of an attribute, throws an exception if not set.
+     *
+     * @param string $attributeName
+     *
+     * @return bool|null
+     *   The boolean representation child node.
+     *
+     * @throws \Exception
+     */
+    public function parseRequiredBooleanAttribute($attributeName)
+    {
+        if (!($this->current instanceof \DOMElement)) {
+            throw new \Exception('Invalid state: current node does not support attributes.');
+        }
+        /**
+         * @var \DOMElement $current
+         */
+        $current = $this->current;
+        if ($current->hasAttribute($attributeName)) {
+            $value = TypeNormalization::normalizeStringToBoolean($current->getAttribute($attributeName));
+        } else {
+            throw new XmlStructureException("Missing boolean attribute: $attributeName");
         }
 
         return $value;

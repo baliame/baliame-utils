@@ -350,7 +350,19 @@ interface ParserInterface
      *
      * @throws \Exception
      */
-    public function parseBooleanAttribute($attributeName, $default = null);
+    public function parseOptionalBooleanAttribute($attributeName, $default = null);
+
+    /**
+     * Returns the boolean representation of an attribute, throws an exception if not set.
+     *
+     * @param string $attributeName
+     *
+     * @return bool|null
+     *   The boolean representation child node.
+     *
+     * @throws \Exception
+     */
+    public function parseRequiredBooleanAttribute($attributeName);
 
     /**
      * Returns an attribute if set, throws and exception otherwise.
