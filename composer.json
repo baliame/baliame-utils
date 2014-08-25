@@ -1,0 +1,21 @@
+{
+    "name": "baliame/baliame-utils",
+    "type": "library",
+    "description": "Baliame Utilities",
+    "homepage": "https://github.com/baliame/baliame-utils",
+    "version": "0.1",
+    "authors": [
+        {
+            "name": "See contributors",
+            "homepage": "https://github.com/baliame/baliame-utils/graphs/contributors"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/baliame/baliame-utils/issues"
+    },
+    "autoload": {
+        "psr-4": {
+            "Baliame\\Utils": "src/"
+        }
+    }
+}
