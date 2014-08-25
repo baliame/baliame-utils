@@ -3,6 +3,8 @@
 namespace Baliame\Utils\Interoperability;
 
 class TypeNormalization {
+
+
     /**
      * Normalizes the boolean values 'true' and 'false' to string.
      * Does nothing if the value is already a string.

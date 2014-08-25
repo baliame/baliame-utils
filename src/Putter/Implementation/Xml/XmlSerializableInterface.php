@@ -4,6 +4,9 @@ namespace Baliame\Utils\Putter\Implementation\Xml;
 
 interface XmlSerializableInterface
 {
+    const LANGUAGE_DEFAULT = 'x-default';
+    const LANGUAGE_UNDEFINED = 'und';
+
     /**
      * Renders the data structure as DOMDocument object.
      *

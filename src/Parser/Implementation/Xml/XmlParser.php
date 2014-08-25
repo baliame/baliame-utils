@@ -1,21 +1,16 @@
 <?php
 
 namespace Baliame\Utils\Parser\Implementation\Xml;
+use Baliame\Utils\Interoperability\TypeNormalization;
+use Baliame\Utils\Parser\ParserException;
 use Baliame\Utils\Parser\ParserInterface;
+use Baliame\Utils\Putter\Implementation\Xml\XmlSerializableInterface;
 
 /**
  * Parses raw XML files produces by Demandware into an OO representation.
  */
 class XmlParser implements ParserInterface
 {
-    /**
-     * Mapping of tag names to the classes that model the collection of
-     * Demandware entities contained within the element.
-     *
-     * @var array
-     */
-    protected static $baseTagAssignment = array();
-
     /**
      * @var \DOMNode
      */
@@ -61,7 +56,7 @@ class XmlParser implements ParserInterface
      *
      * @return true
      *
-     * @throws \Acquia\Demandware\Cartridge\Util\XmlStructureException
+     * @throws XmlStructureException
      *   If the root tagName does not match the provided string, this exception
      *   is thrown (if not set to fail gracefully).
      */
@@ -97,7 +92,7 @@ class XmlParser implements ParserInterface
      * entities.
      *
      * @param string $xml
-     * @param ConnectorInterface $connector
+     * @param XmlConnectorInterface $connector
      *
      * @return object
      *
@@ -105,7 +100,6 @@ class XmlParser implements ParserInterface
      */
     public static function load($xml, $connector)
     {
-        static::setUp();
         // Instantiate the \DOMDocument object from the raw XML string.
         $document = new \DOMDocument('1.0', 'UTF-8');
         $document->preserveWhiteSpace = false;
@@ -126,22 +120,6 @@ class XmlParser implements ParserInterface
         } else {
             throw new XmlStructureException(
                 $rootNode, 'Entity collection class not mapped for root node: ' . $rootNode->tagName
-            );
-        }
-    }
-
-    /**
-     * Sets up the base tag assignments.
-     */
-    protected static function setUp()
-    {
-        if (empty(static::$baseTagAssignment)) {
-            static::$baseTagAssignment = array(
-                'library' => Library::getClassPath(),
-                'catalog' => Catalog::getClassPath(),
-                'slot-configurations' => SlotConfigurations::getClassPath(),
-                'customer-groups' => CustomerGroups::getClassPath(),
-                'inventory' => Inventory::getClassPath(),
             );
         }
     }
@@ -228,7 +206,7 @@ class XmlParser implements ParserInterface
      * @return array
      *   An associative array of values keyed by language.
      *
-     * @throws \Acquia\Demandware\Cartridge\Util\XmlStructureException
+     * @throws XmlStructureException
      */
     public function parseMultipleStringsByLanguage($tagName)
     {
@@ -238,7 +216,7 @@ class XmlParser implements ParserInterface
         foreach ($childNodes as $childNode) {
             if ($childNode instanceof \DOMElement) {
                 if (!$childNode->hasAttribute('xml:lang')) {
-                    $language = Element::LANGUAGE_UNDEFINED;
+                    $language = XmlSerializableInterface::LANGUAGE_UNDEFINED;
                 } else {
                     $language = $childNode->getAttribute('xml:lang');
                 }
@@ -276,7 +254,7 @@ class XmlParser implements ParserInterface
         foreach ($childNodes as $childNode) {
             if ($childNode instanceof \DOMElement) {
                 if (!$childNode->hasAttribute('xml:lang')) {
-                    $language = Element::LANGUAGE_UNDEFINED;
+                    $language = XmlSerializableInterface::LANGUAGE_UNDEFINED;
                 } else {
                     $language = $childNode->getAttribute('xml:lang');
                 }
@@ -462,7 +440,7 @@ class XmlParser implements ParserInterface
      * @return mixed
      *   An instance of $handlerClass, false if the child node is missing.
      *
-     * @throws \Acquia\Demandware\Cartridge\Util\XmlStructureException
+     * @throws XmlStructureException
      */
     public function parseSingleRequiredObject(
         $tagName,
@@ -531,7 +509,7 @@ class XmlParser implements ParserInterface
      *
      * @param $tagName
      *
-     * @throws \Acquia\Demandware\Cartridge\Util\XmlStructureException
+     * @throws XmlStructureException
      */
     public function proceedToSingleChild($tagName)
     {
@@ -792,7 +770,7 @@ class XmlParser implements ParserInterface
     {
         $lang = $this->parseOptionalAttribute('xml:lang');
         if ($lang === null) {
-            return Element::LANGUAGE_UNDEFINED;
+            return XmlSerializableInterface::LANGUAGE_UNDEFINED;
         } else {
             return $lang;
         }
