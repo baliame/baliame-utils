@@ -2,7 +2,8 @@
 
 namespace Baliame\Utils\Parser\Implementation\Xml;
 
-interface XmlConnectorInterface {
+interface XmlConnectorInterface
+{
     /**
      * @param string $rootElementName
      *   Root element name.

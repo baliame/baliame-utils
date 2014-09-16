@@ -15,7 +15,7 @@ abstract class ParserException extends \Exception
     /**
      * @return Object
      */
-    function getElement()
+    public function getElement()
     {
         return $this->element;
     }

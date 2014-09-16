@@ -444,4 +444,4 @@ interface PutterInterface
      * @param string $language
      */
     public function outputLanguage($language);
-} 
+}
