@@ -14,8 +14,8 @@ The following code snippet provides an overview of how simple it is to create an
 
 use Baliame\Utils\Putter\PutterInterface;
 
-// When called with an instance of the included XmlPutter, the ID 'foo', and strings ['bar', 'baz', 'qux']
-// this will output the following DOM:
+// When called with an instance of the included XmlPutter, the ID 'foo',
+// and strings ['bar', 'baz', 'qux'] this will output the following DOM:
 // <strings id="foo">
 //   <string>bar</string>
 //   <string>baz</string>
