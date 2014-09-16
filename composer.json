@@ -13,6 +13,10 @@
     "support": {
         "issues": "https://github.com/baliame/baliame-utils/issues"
     },
+    "require": {
+        "php": ">=5.4.0",
+        "ext-libxml" : "*"
+    },
     "autoload": {
         "psr-4": {
             "Baliame\\Utils\\": "src/"
