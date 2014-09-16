@@ -437,4 +437,4 @@ interface ParserInterface
      * @return object
      */
     public function getRootNode();
-} 
+}

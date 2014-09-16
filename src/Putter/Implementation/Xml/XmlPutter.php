@@ -399,8 +399,7 @@ class XmlPutter implements PutterInterface
         } else {
             if ($this->baseNode instanceof \DOMElement) {
                 throw new \InvalidArgumentException("Element $name in {$this->baseNode->tagName} cannot be null.");
-            }
-            else {
+            } else {
                 throw new \InvalidArgumentException("Element $name not found.");
             }
         }
@@ -514,8 +513,7 @@ class XmlPutter implements PutterInterface
         } else {
             if ($this->baseNode instanceof \DOMElement) {
                 throw new \InvalidArgumentException("Element $name in {$this->baseNode->tagName} cannot be null.");
-            }
-            else {
+            } else {
                 throw new \InvalidArgumentException("Element $name cannot be null.");
             }
         }

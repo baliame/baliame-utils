@@ -2,9 +2,8 @@
 
 namespace Baliame\Utils\Interoperability;
 
-class TypeNormalization {
-
-
+class TypeNormalization
+{
     /**
      * Normalizes the boolean values 'true' and 'false' to string.
      * Does nothing if the value is already a string.
@@ -69,11 +68,11 @@ class TypeNormalization {
      * @throws \InvalidArgumentException
      *   If the date is not a timestamp or numeric string.
      */
-    public static function normalizeDateToString($date) {
+    public static function normalizeDateToString($date)
+    {
         if (is_null($date)) {
             return null;
-        }
-        elseif (!is_int($date) && !is_numeric($date)) {
+        } elseif (!is_int($date) && !is_numeric($date)) {
             throw new \InvalidArgumentException('Date must be a number or a numeric string, got '. gettype($date) . ' (' . $date . ')');
         }
         // Let's be very specific here. Demandware might have problems with anything that doesn't look like whatever
@@ -91,11 +90,11 @@ class TypeNormalization {
      * @throws \InvalidArgumentException
      *   If the date is not a timestamp or numeric string.
      */
-    public static function normalizeDateToStringWithoutTime($date) {
+    public static function normalizeDateToStringWithoutTime($date)
+    {
         if (is_null($date)) {
             return null;
-        }
-        elseif (!is_int($date) && !is_numeric($date)) {
+        } elseif (!is_int($date) && !is_numeric($date)) {
             throw new \InvalidArgumentException('Date must be a number or a numeric string, got '. gettype($date) . ' (' . $date . ')');
         }
         // Let's be very specific here. Demandware might have problems with anything that doesn't look like whatever
@@ -113,11 +112,11 @@ class TypeNormalization {
      * @throws \InvalidArgumentException
      *   If the date is not a number or parseable date string.
      */
-    public static function normalizeStringToDate($date) {
+    public static function normalizeStringToDate($date)
+    {
         if (is_null($date)) {
             return null;
-        }
-        elseif (is_string($date)) {
+        } elseif (is_string($date)) {
             $time = strtotime($date);
             if ($time === false) {
                 throw new \InvalidArgumentException(
@@ -125,11 +124,9 @@ class TypeNormalization {
                 );
             }
             return $time;
-        }
-        elseif (is_int($date) || is_float($date)) {
+        } elseif (is_int($date) || is_float($date)) {
             return intval($date);
-        }
-        else {
+        } else {
             throw new \InvalidArgumentException(
                 'Invalid date argument, expecting string, integer or float, got ' . gettype($date)
             );
@@ -146,7 +143,8 @@ class TypeNormalization {
      * @throws \InvalidArgumentException
      *   If the date is not a timestamp or numeric string.
      */
-    public static function normalizeTimeToString($date) {
+    public static function normalizeTimeToString($date)
+    {
         if (is_null($date)) {
             return null;
         }
@@ -166,7 +164,8 @@ class TypeNormalization {
      * @throws \InvalidArgumentException
      *   If the date is not a number or parseable time string.
      */
-    public static function normalizeStringToTime($date) {
+    public static function normalizeStringToTime($date)
+    {
         return static::normalizeStringToDate($date);
     }
 }
